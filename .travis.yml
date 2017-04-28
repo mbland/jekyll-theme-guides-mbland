@@ -2,4 +2,4 @@ language: ruby
 rvm:
 - 2.4.1
 cache: bundler
-script: rake test build
+script: bundle exec rake test build
