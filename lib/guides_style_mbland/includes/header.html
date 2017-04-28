@@ -1,0 +1,29 @@
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+
+  {% if page.title %}
+    <title>{{ page.title }} - {{ site.name }}</title>
+  {% elsif site.title %}
+    <title>{{ site.title }} - {{ site.name }}</title>
+  {% endif %}
+
+  {% if page.description %}
+    <meta name="description" content="{{ page.description | xml_escape }}">
+  {% elsif site.description %}
+    <meta name="description" content="{{ site.description | xml_escape }}">
+  {% endif %}
+
+  <link rel="shortcut icon" type="image/ico" href="{{ site.baseurl }}/assets/favicons/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ site.baseurl }}/assets/favicons/favicon16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ site.baseurl }}/assets/favicons/favicon32.png" />
+  <link rel="apple-touch-icon" href="{{ site.baseurl }}/assets/favicons/18f-center-57.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="{{ site.baseurl }}/assets/favicons/touch-icon-76.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="{{ site.baseurl }}/assets/favicons/touch-icon-120.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="{{ site.baseurl }}/assets/favicons/touch-icon-152.png"/>
+  <link href='{{ site.baseurl }}/assets/css/google-fonts.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/styles.css" type='text/css' />{% for style in site.styles %}
+  <link rel="stylesheet" href="{{ site.baseurl }}/{{ style }}" type='text/css' />{% endfor %}{% for style in page.styles %}
+  <link rel="stylesheet" href="{{ site.baseurl }}/{{ style }}" type='text/css' />{% endfor %}
+</head>

@@ -1,0 +1,6 @@
+<script src="{{ site.baseurl }}/assets/js/vendor/jquery-1.11.2.min.js"></script>
+<script src="{{ site.baseurl }}/assets/js/accordion.js"></script>
+<script src="{{ site.baseurl }}/assets/js/guide.js"></script>{% for script in site.scripts %}
+<script src="{{ site.baseurl }}/{{ script }}"></script>{% endfor %}{% for script in page.scripts %}
+<script src="{{ site.baseurl }}/{{ script }}"></script>{% endfor %}
+{% jekyll_pages_api_search_load %}
