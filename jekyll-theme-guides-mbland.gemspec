@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://github.com/mbland/jekyll-theme-guides-mbland'
   s.license       = 'ISC'
 
-  s.files         = `git ls-files -z assets _* *.md`.split("\x0")
+  s.files         = `git ls-files -z assets lib _* *.md`.split("\x0")
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename f }
 
   s.add_runtime_dependency 'jekyll', '>=3.2.0'
