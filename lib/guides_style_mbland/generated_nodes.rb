@@ -39,7 +39,8 @@ module GuidesStyleMbland
     end
 
     def self.generated_node(parent_slug)
-      { 'text' => parent_slug.split('-').join(' ').capitalize,
+      {
+        'text' => parent_slug.split('-').join(' ').capitalize,
         'url' => parent_slug + '/',
         'internal' => true,
         'generated' => true,

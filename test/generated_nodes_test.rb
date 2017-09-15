@@ -7,8 +7,7 @@ module GuidesStyleMbland
   # rubocop:disable ClassLength
   # rubocop:disable MethodLength
   class GeneratedNodesTest < ::Minitest::Test
-    def setup
-    end
+    def setup; end
 
     def generate_url_map(nav_data)
       NavigationMenu.map_nav_items_by_url('/', nav_data).to_h
@@ -45,12 +44,11 @@ module GuidesStyleMbland
       url_to_nav = generate_url_map(nav_data)
       GeneratedNodes.create_homes_for_orphans(url_to_nav, nav_data)
       assert_equal(
-        [page_nav(
-          'foo/', 'Foo',
+        [page_nav('foo/', 'Foo',
           generated: true,
-          children: [page_nav('bar/', 'Bar info')])
-        ],
-        nav_data)
+          children: [page_nav('bar/', 'Bar info')])],
+        nav_data
+      )
     end
 
     def test_multiple_orphans
@@ -62,16 +60,17 @@ module GuidesStyleMbland
       url_to_nav = generate_url_map(nav_data)
       GeneratedNodes.create_homes_for_orphans(url_to_nav, nav_data)
       assert_equal(
-        [page_nav(
-          'foo/', 'Foo',
-          generated: true,
-          children: [
-            page_nav('bar/', 'Bar info'),
-            page_nav('baz/', 'Baz info'),
-            page_nav('quux/', 'Quux info'),
-          ])
+        [
+          page_nav('foo/', 'Foo',
+            generated: true,
+            children: [
+              page_nav('bar/', 'Bar info'),
+              page_nav('baz/', 'Baz info'),
+              page_nav('quux/', 'Quux info'),
+            ]),
         ],
-        nav_data)
+        nav_data
+      )
     end
 
     def test_nested_orphan
@@ -79,44 +78,40 @@ module GuidesStyleMbland
       url_to_nav = generate_url_map(nav_data)
       GeneratedNodes.create_homes_for_orphans(url_to_nav, nav_data)
       assert_equal(
-        [page_nav(
-          'foo/', 'Foo',
-          generated: true,
-          children: [
-            page_nav(
-              'bar/', 'Bar',
-              generated: true,
-              children: [page_nav('baz/', 'Baz info')])
-          ])
+        [
+          page_nav('foo/', 'Foo',
+            generated: true,
+            children: [
+              page_nav('bar/', 'Bar',
+                generated: true,
+                children: [page_nav('baz/', 'Baz info')]),
+            ]),
         ],
-        nav_data)
+        nav_data
+      )
     end
 
     def test_remove_stale_nav_entries_does_not_remove_generated_parent_nodes
       nav_data = [
-        page_nav(
-          'foo/', 'Foo',
+        page_nav('foo/', 'Foo',
           generated: true,
           children: [
-            page_nav(
-              'bar/', 'Bar',
+            page_nav('bar/', 'Bar',
               generated: true,
-              children: [page_nav('baz/', 'Baz info')])
-          ])
+              children: [page_nav('baz/', 'Baz info')]),
+          ]),
       ]
       url_to_nav = generate_url_map(nav_data)
-      updated = { '/foo/bar/baz/': true }
-      refute_empty(
-        NavigationMenu.remove_stale_nav_entries(nav_data, url_to_nav, updated))
+      updated = { '/foo/bar/baz/' => true }
+      refute_empty(NavigationMenu.remove_stale_nav_entries(nav_data,
+        url_to_nav, updated))
     end
 
     def test_childless_parent_nodes_are_pruned
       nav_data = [
-        page_nav(
-          'foo/', 'Foo',
+        page_nav('foo/', 'Foo',
           generated: true,
-          children: [page_nav('bar/', 'Bar', generated: true)]
-        )
+          children: [page_nav('bar/', 'Bar', generated: true)]),
       ]
 
       url_to_nav = generate_url_map(nav_data)
@@ -132,29 +127,27 @@ module GuidesStyleMbland
       url_to_nav = generate_url_map(nav_data)
       GeneratedNodes.create_homes_for_orphans(url_to_nav, nav_data)
       assert_equal(
-        [page_nav(
-          'foo/', 'Foo',
-          generated: true,
-          children: [
-            page_nav(
-              'bar/', 'Bar info',
-              children: [page_nav('baz/', 'Baz info')])
-          ])
+        [
+          page_nav('foo/', 'Foo',
+            generated: true,
+            children: [
+              page_nav('bar/', 'Bar info',
+                children: [page_nav('baz/', 'Baz info')]),
+            ]),
         ],
-        nav_data)
+        nav_data
+      )
     end
 
     def test_replace_existing_generated_node_with_new_page_node
       nav_data = [
-        page_nav(
-          'foo/', 'Foo',
+        page_nav('foo/', 'Foo',
           generated: true,
           children: [
-            page_nav(
-              'bar/', 'Bar',
+            page_nav('bar/', 'Bar',
               generated: true,
-              children: [page_nav('baz/', 'Baz info')])
-          ])
+              children: [page_nav('baz/', 'Baz info')]),
+          ]),
       ]
       url_to_nav = generate_url_map(nav_data)
       updated = {
@@ -170,16 +163,15 @@ module GuidesStyleMbland
       GeneratedNodes.create_homes_for_orphans(url_to_nav, nav_data)
       assert_equal(
         [
-          page_nav(
-            'foo/', 'Foo info',
+          page_nav('foo/', 'Foo info',
             children: [
-              page_nav(
-                'bar/', 'Bar',
+              page_nav('bar/', 'Bar',
                 generated: true,
-                children: [page_nav('baz/', 'Baz info')])
-            ])
+                children: [page_nav('baz/', 'Baz info')]),
+            ]),
         ],
-        nav_data)
+        nav_data
+      )
     end
   end
   # rubocop:enable MethodLength

@@ -44,17 +44,20 @@ module GuidesStyleMbland
     def test_nav_items_with_children
       site.config['navigation'] = [
         { 'text' => 'Introduction' },
-        { 'url' => 'foo/',
+        {
+          'url' => 'foo/',
           'text' => 'Foo info',
           'children' => [
             { 'url' => 'bar/', 'text' => 'Bar info' },
             { 'url' => 'baz/', 'text' => 'Baz info' },
           ],
         },
-        { 'url' => 'quux/',
+        {
+          'url' => 'quux/',
           'text' => 'Quux info',
           'children' => [
-            { 'url' => 'xyzzy/',
+            {
+              'url' => 'xyzzy/',
               'text' => 'Xyzzy info',
               'children' => [
                 { 'url' => 'plugh/', 'text' => 'Plugh info' },

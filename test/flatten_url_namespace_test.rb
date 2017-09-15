@@ -39,17 +39,20 @@ module GuidesStyleMbland
     def setup_nav
       site.config['navigation'] = [
         { 'text' => 'Introduction' },
-        { 'url' => 'foo/',
+        {
+          'url' => 'foo/',
           'text' => 'Foo info',
           'children' => [
             { 'url' => 'bar/', 'text' => 'Bar info' },
             { 'url' => 'baz/', 'text' => 'Baz info' },
           ],
         },
-        { 'url' => 'quux/',
+        {
+          'url' => 'quux/',
           'text' => 'Quux info',
           'children' => [
-            { 'url' => 'xyzzy/',
+            {
+              'url' => 'xyzzy/',
               'text' => 'Xyzzy info',
               'children' => [
                 { 'url' => 'plugh/', 'text' => 'Plugh info' },
@@ -114,45 +117,24 @@ module GuidesStyleMbland
       assert_equal('/quux/xyzzy/', xyzzy_page.data['permalink'])
       assert_equal('/quux/xyzzy/plugh/', plugh_page.data['permalink'])
 
-      assert_equal(
-        [
-          { 'url' => '/', 'text' => 'Introduction' },
-        ],
+      assert_equal([{ 'url' => '/', 'text' => 'Introduction' }],
         home_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/foo/', 'text' => 'Foo info' },
-        ],
+      assert_equal([{ 'url' => '/foo/', 'text' => 'Foo info' }],
         foo_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/foo/', 'text' => 'Foo info' },
-          { 'url' => '/foo/bar/', 'text' => 'Bar info' },
-        ],
+      assert_equal([{ 'url' => '/foo/', 'text' => 'Foo info' },
+                    { 'url' => '/foo/bar/', 'text' => 'Bar info' }],
         bar_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/foo/', 'text' => 'Foo info' },
-          { 'url' => '/foo/baz/', 'text' => 'Baz info' },
-        ],
+      assert_equal([{ 'url' => '/foo/', 'text' => 'Foo info' },
+                    { 'url' => '/foo/baz/', 'text' => 'Baz info' }],
         baz_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/quux/', 'text' => 'Quux info' },
-        ],
+      assert_equal([{ 'url' => '/quux/', 'text' => 'Quux info' }],
         quux_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/quux/', 'text' => 'Quux info' },
-          { 'url' => '/quux/xyzzy/', 'text' => 'Xyzzy info' },
-        ],
+      assert_equal([{ 'url' => '/quux/', 'text' => 'Quux info' },
+                    { 'url' => '/quux/xyzzy/', 'text' => 'Xyzzy info' }],
         xyzzy_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/quux/', 'text' => 'Quux info' },
-          { 'url' => '/quux/xyzzy/', 'text' => 'Xyzzy info' },
-          { 'url' => '/quux/xyzzy/plugh/', 'text' => 'Plugh info' },
-        ],
+      assert_equal([{ 'url' => '/quux/', 'text' => 'Quux info' },
+                    { 'url' => '/quux/xyzzy/', 'text' => 'Xyzzy info' },
+                    { 'url' => '/quux/xyzzy/plugh/', 'text' => 'Plugh info' }],
         plugh_page.data['breadcrumbs'])
     end
 
@@ -169,45 +151,24 @@ module GuidesStyleMbland
       assert_equal('/xyzzy/', xyzzy_page.data['permalink'])
       assert_equal('/plugh/', plugh_page.data['permalink'])
 
-      assert_equal(
-        [
-          { 'url' => '/', 'text' => 'Introduction' },
-        ],
+      assert_equal([{ 'url' => '/', 'text' => 'Introduction' }],
         home_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/foo/', 'text' => 'Foo info' },
-        ],
+      assert_equal([{ 'url' => '/foo/', 'text' => 'Foo info' }],
         foo_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/foo/', 'text' => 'Foo info' },
-          { 'url' => '/bar/', 'text' => 'Bar info' },
-        ],
+      assert_equal([{ 'url' => '/foo/', 'text' => 'Foo info' },
+                    { 'url' => '/bar/', 'text' => 'Bar info' }],
         bar_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/foo/', 'text' => 'Foo info' },
-          { 'url' => '/baz/', 'text' => 'Baz info' },
-        ],
+      assert_equal([{ 'url' => '/foo/', 'text' => 'Foo info' },
+                    { 'url' => '/baz/', 'text' => 'Baz info' }],
         baz_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/quux/', 'text' => 'Quux info' },
-        ],
+      assert_equal([{ 'url' => '/quux/', 'text' => 'Quux info' }],
         quux_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/quux/', 'text' => 'Quux info' },
-          { 'url' => '/xyzzy/', 'text' => 'Xyzzy info' },
-        ],
+      assert_equal([{ 'url' => '/quux/', 'text' => 'Quux info' },
+                    { 'url' => '/xyzzy/', 'text' => 'Xyzzy info' }],
         xyzzy_page.data['breadcrumbs'])
-      assert_equal(
-        [
-          { 'url' => '/quux/', 'text' => 'Quux info' },
-          { 'url' => '/xyzzy/', 'text' => 'Xyzzy info' },
-          { 'url' => '/plugh/', 'text' => 'Plugh info' },
-        ],
+      assert_equal([{ 'url' => '/quux/', 'text' => 'Quux info' },
+                    { 'url' => '/xyzzy/', 'text' => 'Xyzzy info' },
+                    { 'url' => '/plugh/', 'text' => 'Plugh info' }],
         plugh_page.data['breadcrumbs'])
     end
 

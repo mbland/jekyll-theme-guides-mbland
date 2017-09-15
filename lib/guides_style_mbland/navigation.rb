@@ -5,7 +5,7 @@ require 'safe_yaml'
 
 module GuidesStyleMbland
   module FrontMatter
-    EXTNAMES = %w(.md .html)
+    EXTNAMES = %w[.md .html].freeze
 
     def self.load(basedir)
       # init_file_to_front_matter_map is initializing the map with a nil value
@@ -13,8 +13,8 @@ module GuidesStyleMbland
       # navigation menu is concerned. Any nil values that remain after merging
       # with the site_file_to_front_matter map will result in a validation
       # error.
-      init_file_to_front_matter_map(basedir).merge(
-        site_file_to_front_matter(init_site(basedir)))
+      init_file_to_front_matter_map(basedir)
+        .merge(site_file_to_front_matter(init_site(basedir)))
     end
 
     def self.validate_with_message_upon_error(front_matter)
@@ -23,7 +23,7 @@ module GuidesStyleMbland
       message = ['The following files have errors in their front matter:']
       files_with_errors.each do |file, errors|
         message << "  #{file}:"
-        message.concat errors.map { |error| "    #{error}" }
+        message.concat(errors.map { |error| "    #{error}" })
       end
       message.join "\n" unless message.size == 1
     end
@@ -36,82 +36,86 @@ module GuidesStyleMbland
       end.compact.to_h
     end
 
-    private
+    class << self
+      private
 
-    def self.init_site(basedir)
-      Dir.chdir(basedir) do
-        config = SafeYAML.load_file('_config.yml', safe: true)
-        adjust_config_paths(basedir, config)
-        site = Jekyll::Site.new(Jekyll.configuration(config))
-        site.reset
-        site.read
-        site
-      end
-    end
-
-    def self.adjust_config_paths(basedir, config)
-      source = config['source']
-      config['source'] = source.nil? ? basedir : File.join(basedir, source)
-      destination = config['destination']
-      destination = '_site' if destination.nil?
-      config['destination'] = File.join(basedir, destination)
-    end
-
-    def self.site_file_to_front_matter(site)
-      site_pages(site).map do |page|
-        [page.relative_path,  page.data]
-      end.to_h
-    end
-
-    # We're supporting two possible configurations:
-    #
-    # - a `pages/` directory in which documents appear as part of the regular
-    #   site.pages collection; we have to filter by page.relative_path, and we
-    #   do not assign a permalink so that validation (in a later step) will
-    #   ensure that each page has a permalink assigned
-    #
-    # - an actual `pages` collection, stored in a `_pages` directory; no
-    #   filtering is necessary, and we can reliably set the permalink to
-    #   page.url as a default
-    def self.site_pages(site)
-      pages = site.collections['pages']
-      if pages.nil?
-        site.pages.select do |page|
-          # Handle both with and without leading slash, as leading slash was
-          # removed in v3.2.0.pre.beta2:
-          # jekyll/jekyll/commit/4fbbeddae20fa52732f30ef001bb1f80258bc5d7
-          page.relative_path.start_with?('/pages/', 'pages/') || page.url == '/'
-        end
-      else
-        pages.docs.each { |page| page.data['permalink'] ||= page.url }
-      end
-    end
-
-    def self.init_file_to_front_matter_map(basedir)
-      file_to_front_matter = {}
-      Dir.chdir(basedir) do
-        pages_dir = Dir.exist?('_pages') ? '_pages' : 'pages'
-        Dir[File.join(pages_dir, '**', '*')].each do |file_name|
-          extname = File.extname(file_name)
-          next unless File.file?(file_name) && EXTNAMES.include?(extname)
-          file_to_front_matter[file_name] = nil
+      def init_site(basedir)
+        Dir.chdir(basedir) do
+          config = SafeYAML.load_file('_config.yml', safe: true)
+          adjust_config_paths(basedir, config)
+          site = Jekyll::Site.new(Jekyll.configuration(config))
+          site.reset
+          site.read
+          site
         end
       end
-      file_to_front_matter
-    end
 
-    def self.missing_property_errors(data)
-      properties = %w(title permalink)
-      properties.map { |p| "no `#{p}:` property" if data[p].nil? }.compact
-    end
+      def adjust_config_paths(basedir, config)
+        source = config['source']
+        config['source'] = source.nil? ? basedir : File.join(basedir, source)
+        destination = config['destination']
+        destination = '_site' if destination.nil?
+        config['destination'] = File.join(basedir, destination)
+      end
 
-    def self.permalink_errors(data)
-      pl = data['permalink']
-      return [] if pl.nil?
-      errors = []
-      errors << "`permalink:` does not begin with '/'" unless pl.start_with? '/'
-      errors << "`permalink:` does not end with '/'" unless pl.end_with? '/'
-      errors
+      def site_file_to_front_matter(site)
+        site_pages(site).map do |page|
+          [page.relative_path,  page.data]
+        end.to_h
+      end
+
+      # We're supporting two possible configurations:
+      #
+      # - a `pages/` directory in which documents appear as part of the regular
+      #   site.pages collection; we have to filter by page.relative_path, and we
+      #   do not assign a permalink so that validation (in a later step) will
+      #   ensure that each page has a permalink assigned
+      #
+      # - an actual `pages` collection, stored in a `_pages` directory; no
+      #   filtering is necessary, and we can reliably set the permalink to
+      #   page.url as a default
+      def site_pages(site)
+        pages = site.collections['pages']
+        if pages.nil?
+          site.pages.select do |page|
+            # Handle both with and without leading slash, as leading slash was
+            # removed in v3.2.0.pre.beta2:
+            # jekyll/jekyll/commit/4fbbeddae20fa52732f30ef001bb1f80258bc5d7
+            page.relative_path.start_with?('/pages/', 'pages/') ||
+              page.url == '/'
+          end
+        else
+          pages.docs.each { |page| page.data['permalink'] ||= page.url }
+        end
+      end
+
+      def init_file_to_front_matter_map(basedir)
+        file_to_front_matter = {}
+        Dir.chdir(basedir) do
+          pages_dir = Dir.exist?('_pages') ? '_pages' : 'pages'
+          Dir[File.join(pages_dir, '**', '*')].each do |file_name|
+            extname = File.extname(file_name)
+            next unless File.file?(file_name) && EXTNAMES.include?(extname)
+            file_to_front_matter[file_name] = nil
+          end
+        end
+        file_to_front_matter
+      end
+
+      def missing_property_errors(data)
+        properties = %w[title permalink]
+        properties.map { |p| "no `#{p}:` property" if data[p].nil? }.compact
+      end
+
+      def permalink_errors(data)
+        pl = data['permalink']
+        return [] if pl.nil?
+        errors = []
+        errors << "`permalink:` does not begin with '/'" \
+          unless pl.start_with? '/'
+        errors << "`permalink:` does not end with '/'" unless pl.end_with? '/'
+        errors
+      end
     end
   end
 
@@ -126,8 +130,8 @@ module GuidesStyleMbland
     return unless config_data
     nav_data = config_data['navigation'] || []
     NavigationMenu.update_navigation_data(nav_data, basedir, config_data)
-    NavigationMenuWriter.write_navigation_data_to_config_file(
-      config_path, nav_data)
+    NavigationMenuWriter.write_navigation_data_to_config_file(config_path,
+      nav_data)
   end
 
   module NavigationMenu
@@ -154,7 +158,8 @@ module GuidesStyleMbland
       front_matter = FrontMatter.load basedir
       errors = FrontMatter.validate_with_message_upon_error front_matter
       abort errors + "\n_config.yml not updated" if errors
-      front_matter.values.sort_by { |fm| fm['permalink'] }
+      front_matter
+        .values.sort_by { |fm| fm['permalink'] }
         .map { |fm| [fm['permalink'], page_nav(fm)] }.to_h
     end
 
@@ -214,10 +219,9 @@ module GuidesStyleMbland
 
     def self.check_for_orphaned_items(nav_data)
       orphan_urls = nav_data.map { |nav| nav[:orphan_url] }.compact
-      unless orphan_urls.empty?
-        fail(StandardError, "Parent pages missing for the following:\n  " +
-          orphan_urls.join("\n  "))
-      end
+      return if orphan_urls.empty?
+      raise StandardError, "Parent pages missing for the following:\n  " +
+        orphan_urls.join("\n  ")
     end
   end
 
@@ -236,7 +240,7 @@ module GuidesStyleMbland
         lines << line << format_navigation_section(nav_data)
         in_navigation = true
       elsif in_navigation
-        in_navigation = line.start_with?(' ') || line.start_with?('-')
+        in_navigation = line.start_with?(' ', '-')
         lines << line unless in_navigation
       else
         lines << line
@@ -244,7 +248,7 @@ module GuidesStyleMbland
       in_navigation
     end
 
-    YAML_PREFIX = "---\n"
+    YAML_PREFIX = "---\n".freeze
 
     def self.format_navigation_section(nav_data)
       nav_data.empty? ? '' : nav_data.to_yaml[YAML_PREFIX.size..-1]

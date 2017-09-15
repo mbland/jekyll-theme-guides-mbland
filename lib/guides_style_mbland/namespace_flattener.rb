@@ -32,8 +32,8 @@ module GuidesStyleMbland
       return if collisions.empty?
 
       messages = collisions.map { |flat, orig| "#{flat}: #{orig.join(', ')}" }
-      fail(StandardError, "collisions in flattened namespace between\n  " +
-        messages.join("\n  "))
+      raise StandardError, "collisions in flattened namespace between\n  " +
+        messages.join("\n  ")
     end
   end
 end

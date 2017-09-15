@@ -33,7 +33,7 @@ module GuidesStyleMbland
     end
 
     def nontemplate_files
-      @nontemplate_files ||= map_files_to_repo_dir %w(foo bar baz)
+      @nontemplate_files ||= map_files_to_repo_dir(%w[foo bar baz])
     end
 
     def write_all_files
@@ -43,7 +43,7 @@ module GuidesStyleMbland
       end
     end
 
-    GO_SCRIPT_BEFORE = <<GO_SCRIPT
+    GO_SCRIPT_BEFORE = <<GO_SCRIPT.freeze
 extend GoScript
 check_ruby_version '2.1.5'
 
@@ -64,7 +64,7 @@ end
 execute_command ARGV
 GO_SCRIPT
 
-    GO_SCRIPT_AFTER = <<GO_SCRIPT
+    GO_SCRIPT_AFTER = <<GO_SCRIPT.freeze
 extend GoScript
 check_ruby_version '2.1.5'
 
@@ -97,11 +97,14 @@ GO_SCRIPT
         GuidesStyleMbland.exec_cmd_capture_output 'git init', logfile
         GuidesStyleMbland.exec_cmd_capture_output 'git add .', logfile
         GuidesStyleMbland.exec_cmd_capture_output(
-          'git config user.email "test@example.com"', logfile)
+          'git config user.email "test@example.com"', logfile
+        )
         GuidesStyleMbland.exec_cmd_capture_output(
-          'git config user.name "Test User"', logfile)
+          'git config user.name "Test User"', logfile
+        )
         GuidesStyleMbland.exec_cmd_capture_output(
-          'git commit -m "original repo"', logfile)
+          'git commit -m "original repo"', logfile
+        )
       end
     rescue SystemExit => e
       flunk("Exited with status: #{e.status}\n" \
@@ -120,8 +123,8 @@ GO_SCRIPT
     def test_remove_all_template_files
       write_all_files
       GuidesStyleMbland.remove_template_files repo_dir, outstream
-      assert template_files.none? { |file| File.exist? file }
-      assert nontemplate_files.all? { |file| File.exist? file }
+      assert(template_files.none? { |file| File.exist? file })
+      assert(nontemplate_files.all? { |file| File.exist? file })
     end
   end
 
@@ -130,15 +133,15 @@ GO_SCRIPT
 
     def test_remove_create_repo_command
       write_go_script RepositoryTestHelper::GO_SCRIPT_BEFORE
-      GuidesStyleMbland.delete_create_repo_command_from_go_script(
-        repo_dir, outstream)
+      GuidesStyleMbland.delete_create_repo_command_from_go_script(repo_dir,
+        outstream)
       assert_equal RepositoryTestHelper::GO_SCRIPT_AFTER, read_go_script
     end
 
     def test_create_repo_command_removal_should_be_idemptoent
       write_go_script RepositoryTestHelper::GO_SCRIPT_AFTER
-      GuidesStyleMbland.delete_create_repo_command_from_go_script(
-        repo_dir, outstream)
+      GuidesStyleMbland.delete_create_repo_command_from_go_script(repo_dir,
+        outstream)
       assert_equal RepositoryTestHelper::GO_SCRIPT_AFTER, read_go_script
     end
   end
@@ -153,7 +156,8 @@ GO_SCRIPT
         create_initial_repo logfile
         logfile.puts LOG_TAIL_MARKER
         GuidesStyleMbland.clear_template_files_and_create_new_repository(
-          repo_dir, logfile)
+          repo_dir, logfile
+        )
       end
       assert_expected_final_repository_state log_path
     end
@@ -162,15 +166,15 @@ GO_SCRIPT
       assert_repository_file_system_state
       assert_log_tail_matches_expected log_path
       assert_new_repo_has_nontemplate_files_staged_for_commit
-    rescue
+    rescue StandardError => e
       puts("Log contents: #{File.read(log_path)}")
-      raise
+      raise e
     end
 
     def assert_repository_file_system_state
-      assert template_files.none? { |file| File.exist? file }
-      assert nontemplate_files.all? { |file| File.exist? file }
-      assert_equal GO_SCRIPT_AFTER, read_go_script
+      assert(template_files.none? { |file| File.exist? file })
+      assert(nontemplate_files.all? { |file| File.exist? file })
+      assert_equal(GO_SCRIPT_AFTER, read_go_script)
     end
 
     def assert_log_tail_matches_expected(log_path)
@@ -187,8 +191,9 @@ GO_SCRIPT
       format(LOG_TAIL, Dir.glob(File.realpath(repo_dir)).first)
     end
 
-    LOG_TAIL_MARKER = '*** Clearing template files and creating new repository.'
-    LOG_TAIL = <<LOG_TAIL
+    LOG_TAIL_MARKER = '*** Clearing template files and ' +
+      'creating new repository.'.freeze
+    LOG_TAIL = <<LOG_TAIL.freeze
 Clearing Guides Template files.
 Removing `:create_repo` command from the `./go` script.
 Removing old git repository.
@@ -211,7 +216,7 @@ LOG_TAIL
       assert_equal STAGED_FILES_STATUS, File.read(log_path)
     end
 
-    STAGED_FILES_STATUS = <<STAGED_FILES_STATUS
+    STAGED_FILES_STATUS = <<STAGED_FILES_STATUS.freeze
 A  bar
 A  baz
 A  foo
