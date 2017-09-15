@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
 
-  {% guides_style_mbland_include header.html %}
+  {% include header.html %}
 
   <body>
 
@@ -31,15 +31,15 @@
           {{ content }}
         </section>
 
-        {% guides_style_mbland_include sidebar.html %}
+        {% include sidebar.html %}
 
       </div><!-- /.wrap content -->
 
-      {% guides_style_mbland_include footer.html %}
+      {% include footer.html %}
 
     </div> <!-- /.container -->
 
   </body>
-{% guides_style_mbland_include analytics.html %}
-{% guides_style_mbland_include scripts.html %}
+{% include analytics.html %}
+{% include scripts.html %}
 </html>
