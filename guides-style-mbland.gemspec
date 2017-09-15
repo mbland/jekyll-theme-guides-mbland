@@ -17,15 +17,12 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://github.com/mbland/guides-style-mbland'
   s.license       = 'ISC'
 
-  s.files         = `git ls-files -z *.md lib assets`.split("\x0")
+  s.files         = `git ls-files -z assets _* *.md`.split("\x0")
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename f }
 
-  s.add_runtime_dependency 'jekyll'
+  s.add_runtime_dependency 'jekyll', '>=3.2.0'
   s.add_runtime_dependency 'jekyll_pages_api'
   s.add_runtime_dependency 'jekyll_pages_api_search'
-  s.add_runtime_dependency 'sass'
-  s.add_runtime_dependency 'rouge'
-  s.add_development_dependency 'go_script'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'codeclimate-test-reporter'

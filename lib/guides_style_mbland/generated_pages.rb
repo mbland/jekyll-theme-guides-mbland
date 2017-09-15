@@ -1,5 +1,3 @@
-require_relative './layouts'
-
 module GuidesStyleMbland
   class GeneratedPages
     DEFAULT_LAYOUT = 'guides_style_mbland_generated_home_redirect'
