@@ -3,7 +3,7 @@ require 'liquid'
 
 module GuidesStyleMbland
   class ShouldExpandNavTag < ::Liquid::Tag
-    NAME = 'guides_style_mbland_should_expand_nav'
+    NAME = 'guides_style_mbland_should_expand_nav'.freeze
     ::Liquid::Template.register_tag(NAME, self)
 
     attr_reader :parent_reference, :url_reference
@@ -32,7 +32,7 @@ module GuidesStyleMbland
   end
 
   class PopLastUrlComponent < ::Liquid::Tag
-    NAME = 'guides_style_mbland_pop_last_url_component'
+    NAME = 'guides_style_mbland_pop_last_url_component'.freeze
     ::Liquid::Template.register_tag(NAME, self)
 
     attr_reader :reference

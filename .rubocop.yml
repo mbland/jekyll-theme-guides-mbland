@@ -2,6 +2,7 @@ AllCops:
   Include:
     - 'Gemfile'
     - 'Rakefile'
+    - 'guides-style-mbland.gemspec'
 
 Lint/ParenthesesAsGroupedExpression:
   Description: Checks for method calls with a space before the opening parenthesis.
@@ -50,7 +51,7 @@ Style/Documentation:
   Description: Document classes and non-namespace modules.
   Enabled: false
 
-Style/DotPosition:
+Layout/DotPosition:
   Description: Checks the position of the dot in multi-line method calls.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#consistent-multi-line-chains
   Enabled: true
@@ -59,8 +60,11 @@ Style/DotPosition:
   - leading
   - trailing
 
-Style/ExtraSpacing:
+Layout/ExtraSpacing:
   Description: Do not use unnecessary spacing.
+  Enabled: false
+
+Layout/IndentHeredoc:
   Enabled: false
 
 Style/GuardClause:
@@ -78,13 +82,13 @@ Style/StringLiterals:
   - single_quotes
   - double_quotes
 
-Style/TrailingComma:
+Style/TrailingCommaInLiteral:
   Description:
     Not allowing a comma after the last item in a list or hash when each item
     is on a single line is a bug, not a feature.
   EnforcedStyleForMultiline: comma
 
-Style/AlignParameters:
+Layout/AlignParameters:
   Description:
     When aligning parameters is not appropriate due to line-length
     constraints, single indent for the lines after the first is also
@@ -92,7 +96,7 @@ Style/AlignParameters:
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-double-indent
   EnforcedStyle: with_fixed_indentation
 
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   Description:
     Allow indented multiline operations, rather than strict alignment.
   EnforcedStyle: indented

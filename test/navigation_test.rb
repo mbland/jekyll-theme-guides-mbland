@@ -95,7 +95,7 @@ module GuidesStyleMbland
       assert_equal expected, read_config
     end
 
-    ALL_PAGES = %w(
+    ALL_PAGES = %w[
       add-a-new-page/make-a-child-page.md
       add-a-new-page.md
       add-images.md
@@ -104,7 +104,7 @@ module GuidesStyleMbland
       post-your-guide.md
       update-the-config-file/understanding-baseurl.md
       update-the-config-file.md
-    )
+    ].freeze
 
     def test_all_pages_with_existing_data
       write_config NAV_YAML
@@ -113,10 +113,10 @@ module GuidesStyleMbland
       assert_equal "#{COLLECTIONS_CONFIG}\n#{NAV_YAML}", read_config
     end
 
-    LEADING_COMMENT = '' \
-      '# Comments before the navigation section should be preserved.'
-    TRAILING_COMMENT = '' \
-      "# Comments after the navigation section should also be preserved.\n"
+    LEADING_COMMENT =  \
+      '# Comments before the navigation section should be preserved.'.freeze
+    TRAILING_COMMENT = '# Comments after the navigation section ' +
+      "should also be preserved.\n".freeze
 
     # We need to be careful not to modify the original NAV_DATA object when
     # sorting.
@@ -222,7 +222,7 @@ module GuidesStyleMbland
       expected_data = sorted_nav_data(NAV_DATA)
       expected_data['navigation'].unshift(
         'text' => 'Link to the mbland/guides-style-mbland repo',
-        'url' => 'https://github.com/mbland/guides-style-mbland',
+        'url' => 'https://github.com/mbland/guides-style-mbland'
       )
       assert_result_matches_expected_config(expected_data)
     end
@@ -317,7 +317,7 @@ module GuidesStyleMbland
 
     def test_should_raise_if_parent_page_does_not_exist
       write_config CONFIG_MISSING_PARENT_PAGE
-      copy_pages ALL_PAGES.reject { |page| page == 'add-a-new-page.md' }
+      copy_pages(ALL_PAGES.reject { |page| page == 'add-a-new-page.md' })
       exception = assert_raises(StandardError) do
         GuidesStyleMbland.update_navigation_configuration testdir
       end
@@ -342,14 +342,14 @@ module GuidesStyleMbland
       assert_result_matches_expected_config(NAV_DATA)
     end
 
-    NO_LEADING_SLASH = <<NO_LEADING_SLASH
+    NO_LEADING_SLASH = <<NO_LEADING_SLASH.freeze
 ---
 title: No leading slash
 permalink: no-leading-slash/
 ---
 NO_LEADING_SLASH
 
-    NO_TRAILING_SLASH = <<NO_TRAILING_SLASH
+    NO_TRAILING_SLASH = <<NO_TRAILING_SLASH.freeze
 ---
 title: No trailing slash
 permalink: /no-trailing-slash
@@ -360,9 +360,9 @@ NO_TRAILING_SLASH
       'missing-front-matter.md' => 'no front matter brosef',
       'no-leading-slash.md' => NO_LEADING_SLASH,
       'no-trailing-slash.md' => NO_TRAILING_SLASH,
-    }
+    }.freeze
 
-    EXPECTED_ERRORS = <<EXPECTED_ERRORS
+    EXPECTED_ERRORS = <<EXPECTED_ERRORS.freeze
 The following files have errors in their front matter:
   _pages/missing-front-matter.md:
     no front matter defined
@@ -380,7 +380,8 @@ EXPECTED_ERRORS
       write_config NAV_YAML
       FILES_WITH_ERRORS.each { |file, content| write_page file, content }
       errors = GuidesStyleMbland::FrontMatter.validate_with_message_upon_error(
-        GuidesStyleMbland::FrontMatter.load(testdir))
+        GuidesStyleMbland::FrontMatter.load(testdir)
+      )
       assert_equal EXPECTED_ERRORS, errors + "\n"
     end
 
@@ -388,11 +389,12 @@ EXPECTED_ERRORS
       write_config NAV_YAML
       write_page('image.png', '')
       errors = GuidesStyleMbland::FrontMatter.validate_with_message_upon_error(
-        GuidesStyleMbland::FrontMatter.load(testdir))
+        GuidesStyleMbland::FrontMatter.load(testdir)
+      )
       assert_nil(errors)
     end
 
-    WITH_NAVTITLE = <<WITH_NAVTITLE
+    WITH_NAVTITLE = <<WITH_NAVTITLE.freeze
 ---
 title: Some egregiously, pretentiously, criminally long title
 navtitle: Hello!
@@ -426,7 +428,8 @@ WITH_NAVTITLE
           GuidesStyleMbland.update_navigation_configuration testdir
         end
         assert_equal 1, exception.status
-        assert($stderr.string.include? EXPECTED_ERRORS + "_config.yml not updated\n")
+        assert($stderr.string.include?(EXPECTED_ERRORS +
+          "_config.yml not updated\n"))
       end
     end
   end

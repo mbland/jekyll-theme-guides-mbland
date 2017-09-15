@@ -1,4 +1,3 @@
-# coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'guides_style_mbland/version'
@@ -9,11 +8,10 @@ Gem::Specification.new do |s|
   s.authors       = ['Mike Bland']
   s.email         = ['mbland@acm.org']
   s.summary       = 'Guides style elements for Jekyll'
-  s.description   = (
+  s.description   = \
     'Provides consistent style elements for Guides generated using Jekyll. ' \
     'Originally based on DOCter (https://github.com/cfpb/docter/) ' \
     'from CFPB (http://cfpb.github.io/).'
-  )
   s.homepage      = 'https://github.com/mbland/guides-style-mbland'
   s.license       = 'ISC'
 

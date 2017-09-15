@@ -9,13 +9,13 @@ module GuidesStyleMbland
 
     def setup
       tag_class = ::Liquid::Template.tags[ShouldExpandNavTag::NAME]
-      @should_expand_nav = tag_class.parse(
-        ShouldExpandNavTag::NAME, 'parent_item, nav_parent_url ', nil, nil)
+      @should_expand_nav = tag_class.parse(ShouldExpandNavTag::NAME,
+        'parent_item, nav_parent_url ', nil, nil)
       @context = ::Liquid::Context.new
       context['site'] = {}
       @parent_item = {}
-      context.scopes.push(
-        'parent_item' => parent_item, 'nav_parent_url' => '/foo/')
+      context.scopes.push('parent_item' => parent_item,
+                          'nav_parent_url' => '/foo/')
     end
 
     def test_is_child
@@ -76,8 +76,8 @@ module GuidesStyleMbland
 
     def setup
       tag_class = ::Liquid::Template.tags[PopLastUrlComponent::NAME]
-      @pop_last_url_component = tag_class.parse(
-        PopLastUrlComponent::NAME, ' parent_url ', nil, nil)
+      @pop_last_url_component = tag_class.parse(PopLastUrlComponent::NAME,
+        ' parent_url ', nil, nil)
       @context = ::Liquid::Context.new
     end
 

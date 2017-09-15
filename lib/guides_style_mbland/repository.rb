@@ -2,7 +2,7 @@ require 'English'
 require 'fileutils'
 
 module GuidesStyleMbland
-  TEMPLATE_FILES = %w(
+  TEMPLATE_FILES = %w[
     _pages/add-a-new-page/make-a-child-page.md
     _pages/add-a-new-page.md
     _pages/add-images.md
@@ -18,10 +18,10 @@ module GuidesStyleMbland
     images/gh-default-branch.png
     images/gh-settings-button.png
     images/gh-webhook.png
-  )
+  ].freeze
 
-  def self.clear_template_files_and_create_new_repository(
-    basedir, outstream = $stdout)
+  def self.clear_template_files_and_create_new_repository(basedir,
+    outstream = $stdout)
     remove_template_files basedir, outstream
     delete_create_repo_command_from_go_script basedir, outstream
     create_new_git_repository basedir, outstream
@@ -31,7 +31,7 @@ module GuidesStyleMbland
     Dir.chdir basedir do
       outstream.puts 'Clearing Guides Template files.'
       files = TEMPLATE_FILES.map { |f| File.join basedir, f }
-        .select { |f| File.exist? f }
+                            .select { |f| File.exist? f }
       File.delete(*files)
     end
   end
@@ -51,7 +51,7 @@ module GuidesStyleMbland
     'Creating a new git repository.' => 'git init',
     'Creating mbland-pages branch.' => 'git checkout -b mbland-pages',
     'Adding files for initial commit.' => 'git add .',
-  }
+  }.freeze
 
   def self.create_new_git_repository(basedir, outstream)
     Dir.chdir basedir do

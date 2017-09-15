@@ -1,6 +1,6 @@
 module GuidesStyleMbland
   class GeneratedPages
-    DEFAULT_LAYOUT = 'guides_style_mbland_generated_home_redirect'
+    DEFAULT_LAYOUT = 'guides_style_mbland_generated_home_redirect'.freeze
 
     def self.generate_pages_from_navigation_data(site)
       layout = site.config['generate_nodes']
@@ -10,8 +10,8 @@ module GuidesStyleMbland
       generate_pages_from_generated_nodes(site, layout, nav_data, '/')
     end
 
-    def self.generate_pages_from_generated_nodes(
-      site, layout, nav_data, parent_url)
+    def self.generate_pages_from_generated_nodes(site, layout, nav_data,
+      parent_url)
       (nav_data || []).select { |nav| nav['generated'] }.each do |nav|
         site.pages << GeneratedPage.new(site, layout, nav, parent_url)
         children = nav['children']
