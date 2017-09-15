@@ -1,4 +1,4 @@
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class GeneratedNodes
     # Params:
     #   url_to_nav: Mapping from original document URL to "nav item" objects,

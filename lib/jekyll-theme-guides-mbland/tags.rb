@@ -1,9 +1,9 @@
 require 'jekyll/tags/include'
 require 'liquid'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class ShouldExpandNavTag < ::Liquid::Tag
-    NAME = 'guides_style_mbland_should_expand_nav'.freeze
+    NAME = 'jekyll_theme_guides_mbland_should_expand_nav'.freeze
     ::Liquid::Template.register_tag(NAME, self)
 
     attr_reader :parent_reference, :url_reference
@@ -32,7 +32,7 @@ module GuidesStyleMbland
   end
 
   class PopLastUrlComponent < ::Liquid::Tag
-    NAME = 'guides_style_mbland_pop_last_url_component'.freeze
+    NAME = 'jekyll_theme_guides_mbland_pop_last_url_component'.freeze
     ::Liquid::Template.register_tag(NAME, self)
 
     attr_reader :reference

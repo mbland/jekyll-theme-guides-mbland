@@ -1,9 +1,9 @@
-require_relative '../lib/guides_style_mbland/generated_nodes'
-require_relative '../lib/guides_style_mbland/navigation'
+require_relative '../lib/jekyll-theme-guides-mbland/generated_nodes'
+require_relative '../lib/jekyll-theme-guides-mbland/navigation'
 
 require 'minitest/autorun'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   # rubocop:disable ClassLength
   # rubocop:disable MethodLength
   class GeneratedNodesTest < ::Minitest::Test

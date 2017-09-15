@@ -1,9 +1,9 @@
-require_relative '../lib/guides_style_mbland/tags'
+require_relative '../lib/jekyll-theme-guides-mbland/tags'
 
 require 'liquid'
 require 'minitest/autorun'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class ShouldExpandNavTagTest < ::Minitest::Test
     attr_reader :should_expand_nav, :context, :parent_item
 

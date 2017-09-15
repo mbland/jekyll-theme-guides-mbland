@@ -1,4 +1,4 @@
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class NamespaceFlattener
     def self.flatten_url_namespace(site, docs)
       flatten_urls(docs) if site.config['flat_namespace']

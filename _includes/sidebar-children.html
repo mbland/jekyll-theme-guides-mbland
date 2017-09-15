@@ -1,5 +1,5 @@
 {% if parent.children %}
-{% capture expand_nav %}{% guides_style_mbland_should_expand_nav parent, parent_url %}{% endcapture %}
+{% capture expand_nav %}{% jekyll_theme_guides_mbland_should_expand_nav parent, parent_url %}{% endcapture %}
 <button class="expand-subnav"
         aria-expanded="{{ expand_nav }}"
         aria-controls="nav-collapsible-{{ forloop.index }}">+</button>
@@ -12,6 +12,6 @@
         title="{% if page.url == child_url %}Current Page{% else %}{{ child.text }}{% endif %}">{{ child.text }}</a>
       {% assign parent = child %}{% assign parent_url = child_url %}
       {% include sidebar-children.html %}
-      {% capture parent_url %}{% guides_style_mbland_pop_last_url_component parent_url %}{% endcapture %}
+      {% capture parent_url %}{% jekyll_theme_guides_mbland_pop_last_url_component parent_url %}{% endcapture %}
     </li>{% endfor %}
 </ul>{% endif %}

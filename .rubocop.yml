@@ -2,7 +2,8 @@ AllCops:
   Include:
     - 'Gemfile'
     - 'Rakefile'
-    - 'guides-style-mbland.gemspec'
+    - 'jekyll-theme-guides-mbland.gemspec'
+    - 'lib/jekyll-theme-guides-mbland.rb'
 
 Lint/ParenthesesAsGroupedExpression:
   Description: Checks for method calls with a space before the opening parenthesis.
