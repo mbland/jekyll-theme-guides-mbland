@@ -1,4 +1,4 @@
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class DummyCollection
     attr_accessor :docs
 

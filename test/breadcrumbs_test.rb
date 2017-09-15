@@ -1,8 +1,8 @@
-require_relative '../lib/guides_style_mbland/breadcrumbs'
+require_relative '../lib/jekyll-theme-guides-mbland/breadcrumbs'
 
 require 'minitest/autorun'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class DummySite
     attr_accessor :config
 

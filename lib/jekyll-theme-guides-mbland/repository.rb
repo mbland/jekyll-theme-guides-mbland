@@ -1,7 +1,7 @@
 require 'English'
 require 'fileutils'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   TEMPLATE_FILES = %w[
     _pages/add-a-new-page/make-a-child-page.md
     _pages/add-a-new-page.md

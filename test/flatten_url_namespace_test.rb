@@ -1,4 +1,4 @@
-require_relative '../lib/guides_style_mbland/generator'
+require_relative '../lib/jekyll-theme-guides-mbland/generator'
 require_relative './dummy_collection'
 require_relative './dummy_page'
 require_relative './dummy_site'
@@ -6,7 +6,7 @@ require_relative './dummy_site'
 require 'jekyll/page'
 require 'minitest/autorun'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   # rubocop:disable ClassLength
   # rubocop:disable MethodLength
   class FlattenUrlNamespaceTest < ::Minitest::Test

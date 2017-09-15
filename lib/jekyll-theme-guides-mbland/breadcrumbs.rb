@@ -1,7 +1,7 @@
 require 'jekyll'
 require 'safe_yaml'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class Breadcrumbs
     def self.generate(site, docs)
       breadcrumbs = create_breadcrumbs(site)

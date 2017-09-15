@@ -1,4 +1,4 @@
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class DummySite
     attr_accessor :config, :layouts, :static_files, :collections, :pages
     attr_accessor :permalink_style, :source

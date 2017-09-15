@@ -1,10 +1,10 @@
-require_relative '../lib/guides_style_mbland/repository'
+require_relative '../lib/jekyll-theme-guides-mbland/repository'
 
 require 'fileutils'
 require 'minitest/autorun'
 require 'stringio'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   module RepositoryTestHelper
     attr_reader :testdir, :repo_dir, :outstream
 
@@ -50,16 +50,16 @@ check_ruby_version '2.1.5'
 command_group :dev, 'Development commands'
 
 def_command :update_nav, 'Update the \'navigation:\' data in _config.yml' do
-  GuidesStyleMbland.update_navigation_configuration Dir.pwd
+  JekyllThemeGuidesMbland.update_navigation_configuration Dir.pwd
 end
 
 def_command(
   :create_repo, 'Remove template files and create a new Git repository') do
-  GuidesStyleMbland.clear_template_files_and_create_new_repository Dir.pwd
+  JekyllThemeGuidesMbland.clear_template_files_and_create_new_repository Dir.pwd
 end
 
-def_command :update_theme, 'Update the guides_style_mbland gem' do
-  exec_cmd 'bundle update --source guides_style_mbland'
+def_command :update_theme, 'Update the jekyll-theme-guides-mbland gem' do
+  exec_cmd 'bundle update --source jekyll-theme-guides-mbland'
 end
 execute_command ARGV
 GO_SCRIPT
@@ -71,11 +71,11 @@ check_ruby_version '2.1.5'
 command_group :dev, 'Development commands'
 
 def_command :update_nav, 'Update the \'navigation:\' data in _config.yml' do
-  GuidesStyleMbland.update_navigation_configuration Dir.pwd
+  JekyllThemeGuidesMbland.update_navigation_configuration Dir.pwd
 end
 
-def_command :update_theme, 'Update the guides_style_mbland gem' do
-  exec_cmd 'bundle update --source guides_style_mbland'
+def_command :update_theme, 'Update the jekyll-theme-guides-mbland gem' do
+  exec_cmd 'bundle update --source jekyll-theme-guides-mbland'
 end
 execute_command ARGV
 GO_SCRIPT
@@ -94,15 +94,15 @@ GO_SCRIPT
         logfile.puts '*** Creating initial repository.'
         write_all_files
         write_go_script GO_SCRIPT_BEFORE
-        GuidesStyleMbland.exec_cmd_capture_output 'git init', logfile
-        GuidesStyleMbland.exec_cmd_capture_output 'git add .', logfile
-        GuidesStyleMbland.exec_cmd_capture_output(
+        JekyllThemeGuidesMbland.exec_cmd_capture_output 'git init', logfile
+        JekyllThemeGuidesMbland.exec_cmd_capture_output 'git add .', logfile
+        JekyllThemeGuidesMbland.exec_cmd_capture_output(
           'git config user.email "test@example.com"', logfile
         )
-        GuidesStyleMbland.exec_cmd_capture_output(
+        JekyllThemeGuidesMbland.exec_cmd_capture_output(
           'git config user.name "Test User"', logfile
         )
-        GuidesStyleMbland.exec_cmd_capture_output(
+        JekyllThemeGuidesMbland.exec_cmd_capture_output(
           'git commit -m "original repo"', logfile
         )
       end
@@ -117,12 +117,12 @@ GO_SCRIPT
     include RepositoryTestHelper
 
     def test_empty_repo_dir_should_not_raise
-      GuidesStyleMbland.remove_template_files repo_dir, outstream
+      JekyllThemeGuidesMbland.remove_template_files repo_dir, outstream
     end
 
     def test_remove_all_template_files
       write_all_files
-      GuidesStyleMbland.remove_template_files repo_dir, outstream
+      JekyllThemeGuidesMbland.remove_template_files repo_dir, outstream
       assert(template_files.none? { |file| File.exist? file })
       assert(nontemplate_files.all? { |file| File.exist? file })
     end
@@ -133,15 +133,17 @@ GO_SCRIPT
 
     def test_remove_create_repo_command
       write_go_script RepositoryTestHelper::GO_SCRIPT_BEFORE
-      GuidesStyleMbland.delete_create_repo_command_from_go_script(repo_dir,
-        outstream)
+      JekyllThemeGuidesMbland.delete_create_repo_command_from_go_script(
+        repo_dir, outstream
+      )
       assert_equal RepositoryTestHelper::GO_SCRIPT_AFTER, read_go_script
     end
 
     def test_create_repo_command_removal_should_be_idemptoent
       write_go_script RepositoryTestHelper::GO_SCRIPT_AFTER
-      GuidesStyleMbland.delete_create_repo_command_from_go_script(repo_dir,
-        outstream)
+      JekyllThemeGuidesMbland.delete_create_repo_command_from_go_script(
+        repo_dir, outstream
+      )
       assert_equal RepositoryTestHelper::GO_SCRIPT_AFTER, read_go_script
     end
   end
@@ -155,7 +157,7 @@ GO_SCRIPT
         logfile.sync = true
         create_initial_repo logfile
         logfile.puts LOG_TAIL_MARKER
-        GuidesStyleMbland.clear_template_files_and_create_new_repository(
+        JekyllThemeGuidesMbland.clear_template_files_and_create_new_repository(
           repo_dir, logfile
         )
       end
@@ -210,7 +212,9 @@ LOG_TAIL
       open(log_path, 'w') do |logfile|
         logfile.sync = true
         Dir.chdir repo_dir do
-          GuidesStyleMbland.exec_cmd_capture_output 'git status -s', logfile
+          JekyllThemeGuidesMbland.exec_cmd_capture_output(
+            'git status -s', logfile
+          )
         end
       end
       assert_equal STAGED_FILES_STATUS, File.read(log_path)

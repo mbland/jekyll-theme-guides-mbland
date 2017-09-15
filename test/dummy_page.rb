@@ -1,4 +1,4 @@
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class DummyPage < ::Jekyll::Page
     attr_accessor :data
 

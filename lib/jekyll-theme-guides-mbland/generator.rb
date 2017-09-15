@@ -4,7 +4,7 @@ require_relative './namespace_flattener'
 
 require 'jekyll'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class Generator < ::Jekyll::Generator
     def generate(site)
       GeneratedPages.generate_pages_from_navigation_data(site)

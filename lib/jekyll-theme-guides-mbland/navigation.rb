@@ -3,7 +3,7 @@ require_relative './generated_nodes'
 require 'jekyll'
 require 'safe_yaml'
 
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   module FrontMatter
     EXTNAMES = %w[.md .html].freeze
 

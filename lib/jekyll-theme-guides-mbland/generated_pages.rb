@@ -1,6 +1,6 @@
-module GuidesStyleMbland
+module JekyllThemeGuidesMbland
   class GeneratedPages
-    DEFAULT_LAYOUT = 'guides_style_mbland_generated_home_redirect'.freeze
+    DEFAULT_LAYOUT = 'jekyll_theme_guides_mbland_generated_home_redirect'.freeze
 
     def self.generate_pages_from_navigation_data(site)
       layout = site.config['generate_nodes']

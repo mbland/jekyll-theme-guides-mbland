@@ -1,10 +1,12 @@
-## [`guides_style_mbland`](https://rubygems.org/gems/guides_style_mbland): Guides style gem for Jekyll
+## [`jekyll-theme-guides-mbland`](https://rubygems.org/gems/jekyll-theme-guides-mbland): Jekyll theme gem for styling guides
 
-[![Build Status](https://travis-ci.org/mbland/guides-style-mbland.svg?branch=master)](https://travis-ci.org/mbland/guides-style-mbland)
+[![Build Status](https://travis-ci.org/mbland/jekyll-theme-guides-mbland.svg?branch=master)](https://travis-ci.org/mbland/jekyll-theme-guides-mbland)
 
-Provides consistent style elements for Guides generated using [Jekyll][]. Originally based on [DOCter][] from [CFPB][].
+Provides consistent style elements for guides generated using [Jekyll][] via its
+[themes mechanism][themes]. Originally based on [DOCter][] from [CFPB][].
 
 [Jekyll]: https://jekyllrb.com/
+[themes]: https://jekyllrb.com/docs/themes/
 [DOCter]: https://github.com/cfpb/docter/
 [CFPB]:   https://cfpb.github.io/
 
@@ -16,7 +18,7 @@ In your [`Gemfile`][gemfile], include the following:
 
 ```ruby
 group :jekyll_plugins do
-  gem 'guides_style_mbland'
+  gem 'jekyll-theme-guides-mbland'
 end
 ```
 
@@ -26,7 +28,7 @@ Add an `assets/css/styles.scss` file that contains at least the following:
 ---
 ---
 
-@import "guides_style_mbland";
+@import "{{ site.theme }}";
 ```
 
 Then in your [`_config.yml` file](https://jekyllrb.com/docs/configuration/),
@@ -35,7 +37,7 @@ add the following (you may need to remove any `layout:`
 this to take effect):
 
 ```yaml
-theme: guides_style_mbland
+theme: jekyll-theme-guides-mbland
 
 defaults:
   -
@@ -122,20 +124,25 @@ parent directory. For example, to use the Guides Template:
 
 ```shell
 $ git clone git@github.com:mbland/guides-template-mbland.git
-$ git clone git@github.com:mbland/guides-style-mbland.git
+$ git clone git@github.com:mbland/jekyll-theme-guides-mbland.git
 ```
 
 In the `Gemfile` of the Jekyll site's repository, include the following:
 
 ```ruby
 group :jekyll_plugins do
-  gem 'guides_style_mbland', :path => '../guides-style-mbland'
+  gem 'jekyll-theme-guides-mbland', :path => '../jekyll-theme-guides-mbland'
 end
 ```
 
-You can find the different style assets and templates within subdirectories of
-the `assets` and `lib/guides_style_mbland` directories of this repository. Edit
-those, then rebuild the Jekyll site as usual to see the results.
+You can find the different style assets and templates within the `assets`,
+`_layouts`, `_includes`, and `_sass` directories of this repository. Edit those,
+then rebuild the Jekyll site as usual to see the results.
+
+Alternatively, you can [copy files from these directories into your site and
+edit them to taste][edit].
+
+[edit]: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 ### Open Source License
 
