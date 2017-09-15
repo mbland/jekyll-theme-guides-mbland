@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
 
-  {% guides_style_mbland_include header.html %}
+  {% include header.html %}
 
   <body>
 
@@ -13,9 +13,9 @@
         <div class="wrap">
 
 
-          <h1 class="site-title"><a class="title-link" href="{{ site.baseurl }}/">{{ site.name }}</a></h1>{% if site.back_link %}
+          <h1 class="site-title"><a class="title-link" href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
 
-          {% jekyll_pages_api_search_interface %}
+          {% jekyll_pages_api_search_interface %}{% if site.back_link %}
 
           <div class="back-link"><a href="{{ site.back_link.url }}">&laquo; {{ site.back_link.text }}</a></div>{% endif %}
 
@@ -31,15 +31,15 @@
           {{ content }}
         </section>
 
-        {% guides_style_mbland_include sidebar.html %}
+        {% include sidebar.html %}
 
       </div><!-- /.wrap content -->
 
-      {% guides_style_mbland_include footer.html %}
+      {% include footer.html %}
 
     </div> <!-- /.container -->
 
   </body>
-{% guides_style_mbland_include analytics.html %}
-{% guides_style_mbland_include scripts.html %}
+{% include analytics.html %}
+{% include scripts.html %}
 </html>
