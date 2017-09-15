@@ -171,6 +171,26 @@ Navigation
 ==================================
 */
 
+.breadcrumbs ol {
+  list-style: none;
+  padding-left: 20px;
+  margin: 0px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.breadcrumbs ol li {
+  display: inline;
+}
+
+.breadcrumbs ol li:only-child {
+  display: none;
+}
+
+.breadcrumbs .parent::after {
+  content: " >";
+}
+
 .sidebar-nav a {
   display: block;
   padding: 10px;

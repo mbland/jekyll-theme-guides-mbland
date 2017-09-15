@@ -18,10 +18,8 @@
           {% jekyll_pages_api_search_interface %}{% if site.back_link %}
 
           <div class="back-link"><a href="{{ site.back_link.url }}">&laquo; {{ site.back_link.text }}</a></div>{% endif %}
-
-
         </div>
-
+        {% include breadcrumbs.html %}
       </header>
 
       <div class="wrap content">
