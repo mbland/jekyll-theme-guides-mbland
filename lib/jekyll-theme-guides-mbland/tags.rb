@@ -1,4 +1,4 @@
-require 'jekyll/tags/include'
+require 'jekyll'
 require 'liquid'
 
 module JekyllThemeGuidesMbland

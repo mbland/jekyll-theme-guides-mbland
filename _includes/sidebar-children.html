@@ -5,7 +5,7 @@
         aria-controls="nav-collapsible-{{ forloop.index }}">+</button>
 <ul class="nav-children" id="nav-collapsible-{{ forloop.index }}"
     aria-hidden="{% if expand_nav == 'true' %}false{% else %}true{% endif %}">
-  {% for child in parent.children %}
+  {% if site.flat_namespace %}{% assign parent_url = '/' %}{% endif %}{% for child in parent.children %}
   {% capture child_url %}{{ parent_url }}{{ child.url }}{% endcapture %}
     <li class="{% if page.url == child_url %}sidebar-nav-active{% endif %}">
       <a href="{% if child.internal == true %}{{ site.baseurl }}{{ child_url }}{% else %}{{ child.url }}{% endif %}"

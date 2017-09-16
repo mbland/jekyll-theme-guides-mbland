@@ -6,6 +6,7 @@ module JekyllThemeGuidesMbland
       @site = site
       @data = {}
       @dir = nil
+      data['title'] = "I'm a dummy!"
       data['permalink'] = permalink
     end
 

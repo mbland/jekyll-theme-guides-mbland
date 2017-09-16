@@ -19,7 +19,7 @@ module JekyllThemeGuidesMbland
       '    output: true',
       '    permalink: /:path/',
       '',
-    ].join("\n")
+    ].join("\n").freeze
 
     ALL_PAGES = %w[
       add-a-new-page/make-a-child-page.md
