@@ -5,6 +5,7 @@ module JekyllThemeGuidesMbland
     def initialize(site, permalink)
       @site = site
       @data = {}
+      @dir = nil
       data['permalink'] = permalink
     end
 
