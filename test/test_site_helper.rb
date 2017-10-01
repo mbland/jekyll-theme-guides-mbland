@@ -4,7 +4,7 @@ require 'stringio'
 
 module JekyllThemeGuidesMbland
   module TestSiteHelper
-    attr_reader :testdir, :config_path, :pages_dir
+    attr_reader :testdir, :config_path, :pages_dir, :site_dir
 
     TEST_DIR = File.dirname(__FILE__)
     TEST_PAGES_DIR = File.join(TEST_DIR, '_pages')
@@ -43,6 +43,7 @@ module JekyllThemeGuidesMbland
       @config_path = File.join(testdir, '_config.yml')
       @pages_dir = File.join(testdir, '_pages')
       FileUtils.mkdir_p(pages_dir)
+      @site_dir = File.join(testdir, '_site')
     end
 
     def teardown
