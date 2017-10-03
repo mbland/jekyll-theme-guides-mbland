@@ -1,4 +1,5 @@
 require_relative '../lib/jekyll-theme-guides-mbland/navigation'
+require_relative './test_site_helper'
 
 require 'fileutils'
 require 'minitest/autorun'
@@ -8,133 +9,37 @@ require 'stringio'
 module JekyllThemeGuidesMbland
   # rubocop:disable ClassLength
   class NavigationTest < ::Minitest::Test
-    attr_reader :testdir, :config_path, :pages_dir
-
-    TEST_DIR = File.dirname(__FILE__)
-    TEST_PAGES_DIR = File.join TEST_DIR, '_pages'
-
-    NAV_DATA_PATH = File.join(TEST_DIR, 'navigation_test_data.yml')
-    NAV_YAML = File.read(NAV_DATA_PATH)
-    NAV_DATA = SafeYAML.load(NAV_YAML, safe: true)
-
-    COLLECTIONS_CONFIG = [
-      'collections:',
-      '  pages:',
-      '    output: true',
-      '    permalink: /:path/',
-      '',
-    ].join("\n")
-
-    def setup
-      @testdir = Dir.glob(Dir.mktmpdir).first
-      @config_path = File.join testdir, '_config.yml'
-      @pages_dir = File.join testdir, '_pages'
-      FileUtils.mkdir_p pages_dir
-    end
-
-    def teardown
-      FileUtils.rm_rf(testdir, secure: true)
-    end
-
-    def write_config(config_data, with_collections: true)
-      prefix = with_collections ? "#{COLLECTIONS_CONFIG}\n" : ''
-      File.write(config_path, "#{prefix}#{config_data}")
-    end
-
-    def read_config
-      File.read config_path
-    end
-
-    def copy_pages(pages)
-      pages.each do |page|
-        parent_dir = File.dirname(page)
-        full_orig_path = File.join(TEST_PAGES_DIR, page)
-        target_dir = File.join(pages_dir, parent_dir)
-        FileUtils.mkdir_p(target_dir)
-        FileUtils.cp(full_orig_path, target_dir)
-      end
-    end
-
-    def nav_array_to_hash(nav)
-      (nav['navigation'] || []).map { |i| [i['text'], i] }.to_h
-    end
-
-    def assert_result_matches_expected_config(nav_data)
-      # We can't do a straight string comparison, since the items may not be
-      # in order relative to the original.
-      result = read_config
-      result_data = SafeYAML.load(result, safe: true)
-      refute_equal(-1, result.index(LEADING_COMMENT),
-        'Comment before `navigation:` section is missing')
-      refute_equal(-1, result.index(TRAILING_COMMENT),
-        'Comment after `navigation:` section is missing')
-      assert_equal nav_array_to_hash(nav_data), nav_array_to_hash(result_data)
-    end
+    include TestSiteHelper
 
     def test_empty_config_no_pages
       write_config('', with_collections: false)
-      JekyllThemeGuidesMbland.update_navigation_configuration @testdir
-      assert_equal '', read_config
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
+      assert_equal('', read_config)
     end
 
     def test_empty_config_no_nav_data_no_pages
       write_config('', with_collections: false)
-      JekyllThemeGuidesMbland.update_navigation_configuration @testdir
-      assert_equal '', read_config
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
+      assert_equal('', read_config)
     end
 
     def test_config_with_nav_data_but_no_pages
-      write_config NAV_YAML
-      JekyllThemeGuidesMbland.update_navigation_configuration @testdir
-      expected = [
-        COLLECTIONS_CONFIG,
-        LEADING_COMMENT,
-        'navigation:',
-        TRAILING_COMMENT,
-      ].join("\n")
-      assert_equal expected, read_config
+      write_config(NAV_YAML)
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
+      assert_equal(nav_config, read_config)
     end
-
-    ALL_PAGES = %w[
-      add-a-new-page/make-a-child-page.md
-      add-a-new-page.md
-      add-images.md
-      github-setup.md
-      index.md
-      post-your-guide.md
-      update-the-config-file/understanding-baseurl.md
-      update-the-config-file.md
-    ].freeze
 
     def test_all_pages_with_existing_data
-      write_config NAV_YAML
-      copy_pages ALL_PAGES
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
-      assert_equal "#{COLLECTIONS_CONFIG}\n#{NAV_YAML}", read_config
-    end
-
-    LEADING_COMMENT =  \
-      '# Comments before the navigation section should be preserved.'.freeze
-    TRAILING_COMMENT = '# Comments after the navigation section ' +
-      "should also be preserved.\n".freeze
-
-    # We need to be careful not to modify the original NAV_DATA object when
-    # sorting.
-    def sorted_nav_data(nav_data)
-      nav_data = {}.merge(nav_data)
-      sorted = nav_data['navigation'].map { |i| i }.sort_by { |i| i['text'] }
-      nav_data['navigation'] = sorted
-      nav_data
+      write_config(NAV_YAML)
+      copy_pages(ALL_PAGES)
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
+      assert_equal("#{COLLECTIONS_CONFIG}\n#{NAV_YAML}", read_config)
     end
 
     def test_add_all_pages_from_scratch
-      write_config([
-        LEADING_COMMENT,
-        'navigation:',
-        TRAILING_COMMENT,
-      ].join("\n"))
+      write_config(nav_config)
       copy_pages(ALL_PAGES)
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       assert_result_matches_expected_config(sorted_nav_data(NAV_DATA))
     end
 
@@ -157,18 +62,21 @@ module JekyllThemeGuidesMbland
       write_config([
         LEADING_COMMENT, nav_data.to_yaml[4..-2], TRAILING_COMMENT
       ].join("\n"))
-      copy_pages ALL_PAGES
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
-      assert_equal "#{COLLECTIONS_CONFIG}\n#{NAV_YAML}", read_config
+      copy_pages(ALL_PAGES)
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
+      assert_equal("#{COLLECTIONS_CONFIG}\n#{NAV_YAML}", read_config)
     end
 
     def write_config_without_collection
       # Use the `pages/` dir instead of `_pages`. Set the default permalink
       # for all the pages so we don't need to manually update every page.
       @pages_dir = File.join(testdir, 'pages')
-      FileUtils.mkdir_p pages_dir
+      FileUtils.mkdir_p(pages_dir)
       config = [
-        'permalink: /:path/', LEADING_COMMENT, 'navigation:', TRAILING_COMMENT
+        'permalink: /:path/',
+        LEADING_COMMENT,
+        'navigation:',
+        TRAILING_COMMENT,
       ].join("\n")
       write_config(config, with_collections: false)
     end
@@ -200,25 +108,19 @@ module JekyllThemeGuidesMbland
       write_config_without_collection
       move_home_page_and_create_external_page
       add_permalinks(ALL_PAGES)
-      ENV['TEST_DEBUG'] = '1'
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
-      ENV.delete('TEST_DEBUG')
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       assert_result_matches_expected_config(sorted_nav_data(NAV_DATA))
     end
 
     CONFIG_WITH_EXTERNAL_PAGE = [
-      COLLECTIONS_CONFIG,
-      LEADING_COMMENT,
-      'navigation:',
       '- text: Link to the mbland/guides-style-mbland repo',
       '  url: https://github.com/mbland/guides-style-mbland',
-      TRAILING_COMMENT,
-    ].join("\n")
+    ].freeze
 
     def test_do_not_remove_external_page_entries
-      write_config(CONFIG_WITH_EXTERNAL_PAGE)
+      write_config(nav_config(CONFIG_WITH_EXTERNAL_PAGE))
       copy_pages(ALL_PAGES)
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       expected_data = sorted_nav_data(NAV_DATA)
       expected_data['navigation'].unshift(
         'text' => 'Link to the mbland/guides-style-mbland repo',
@@ -228,9 +130,6 @@ module JekyllThemeGuidesMbland
     end
 
     CONFIG_WITH_MISSING_PAGES = [
-      COLLECTIONS_CONFIG,
-      LEADING_COMMENT,
-      'navigation:',
       '- text: Introduction',
       '  internal: true',
       '- text: Add a new page',
@@ -240,20 +139,16 @@ module JekyllThemeGuidesMbland
       '  - text: Make a child page',
       '    url: make-a-child-page/',
       '    internal: true',
-      TRAILING_COMMENT,
-    ].join "\n"
+    ].freeze
 
     def test_add_missing_pages
-      write_config CONFIG_WITH_MISSING_PAGES
-      copy_pages ALL_PAGES
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
+      write_config(nav_config(CONFIG_WITH_MISSING_PAGES))
+      copy_pages(ALL_PAGES)
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       assert_result_matches_expected_config(NAV_DATA)
     end
 
     CONFIG_MISSING_CHILD_PAGES = [
-      COLLECTIONS_CONFIG,
-      LEADING_COMMENT,
-      'navigation:',
       '- text: Introduction',
       '  internal: true',
       '- text: Add a new page',
@@ -271,20 +166,16 @@ module JekyllThemeGuidesMbland
       '- text: Post your guide',
       '  url: post-your-guide/',
       '  internal: true',
-      TRAILING_COMMENT,
-    ].join "\n"
+    ].freeze
 
     def test_add_missing_child_pages
-      write_config CONFIG_MISSING_CHILD_PAGES
-      copy_pages ALL_PAGES
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
+      write_config(nav_config(CONFIG_MISSING_CHILD_PAGES))
+      copy_pages(ALL_PAGES)
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       assert_result_matches_expected_config(NAV_DATA)
     end
 
     CONFIG_MISSING_PARENT_PAGE = [
-      COLLECTIONS_CONFIG,
-      LEADING_COMMENT,
-      'navigation:',
       '- text: Introduction',
       '  internal: true',
       '- text: Add images',
@@ -302,24 +193,23 @@ module JekyllThemeGuidesMbland
       '- text: Post your guide',
       '  url: post-your-guide/',
       '  internal: true',
-      TRAILING_COMMENT,
-    ].join "\n"
+    ].freeze
 
     # An entry for the child already exists, and we want to move it under a
     # parent page, under the presumption that the parent relationship was just
     # added.
     def test_add_missing_parent_page
-      write_config CONFIG_MISSING_PARENT_PAGE
-      copy_pages ALL_PAGES
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
+      write_config(nav_config(CONFIG_MISSING_PARENT_PAGE))
+      copy_pages(ALL_PAGES)
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       assert_result_matches_expected_config(NAV_DATA)
     end
 
     def test_should_raise_if_parent_page_does_not_exist
-      write_config CONFIG_MISSING_PARENT_PAGE
+      write_config(nav_config(CONFIG_MISSING_PARENT_PAGE))
       copy_pages(ALL_PAGES.reject { |page| page == 'add-a-new-page.md' })
       exception = assert_raises(StandardError) do
-        JekyllThemeGuidesMbland.update_navigation_configuration testdir
+        JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       end
       expected = "Parent pages missing for the following:\n  " \
         '/add-a-new-page/make-a-child-page/'
@@ -327,18 +217,14 @@ module JekyllThemeGuidesMbland
     end
 
     CONFIG_CONTAINING_ONLY_INTRODUCTION = [
-      COLLECTIONS_CONFIG,
-      LEADING_COMMENT,
-      'navigation:',
       '- text: Introduction',
       '  internal: true',
-      TRAILING_COMMENT,
-    ].join "\n"
+    ].freeze
 
     def test_all_pages_starting_with_empty_data
-      write_config CONFIG_CONTAINING_ONLY_INTRODUCTION
-      copy_pages ALL_PAGES
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
+      write_config(nav_config(CONFIG_CONTAINING_ONLY_INTRODUCTION))
+      copy_pages(ALL_PAGES)
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       assert_result_matches_expected_config(NAV_DATA)
     end
 
@@ -372,13 +258,9 @@ The following files have errors in their front matter:
     `permalink:` does not end with '/'
 EXPECTED_ERRORS
 
-    def write_page(filename, content)
-      File.write File.join(pages_dir, filename), content
-    end
-
     def test_detect_front_matter_errors
-      write_config NAV_YAML
-      FILES_WITH_ERRORS.each { |file, content| write_page file, content }
+      write_config(NAV_YAML)
+      FILES_WITH_ERRORS.each { |file, content| write_page(file, content) }
       errors = \
         JekyllThemeGuidesMbland::FrontMatter.validate_with_message_upon_error(
           JekyllThemeGuidesMbland::FrontMatter.load(testdir)
@@ -387,7 +269,7 @@ EXPECTED_ERRORS
     end
 
     def test_ignore_static_files
-      write_config NAV_YAML
+      write_config(NAV_YAML)
       write_page('image.png', '')
       errors = \
         JekyllThemeGuidesMbland::FrontMatter.validate_with_message_upon_error(
@@ -404,9 +286,9 @@ navtitle: Hello!
 WITH_NAVTITLE
 
     def test_use_navtitle_if_present
-      write_config NAV_YAML
+      write_config(NAV_YAML)
       write_page('navtitle.md', WITH_NAVTITLE)
-      JekyllThemeGuidesMbland.update_navigation_configuration testdir
+      JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
       expected = [{
         'text' => 'Hello!', 'url' => 'navtitle/', 'internal' => true
       }]
@@ -414,22 +296,14 @@ WITH_NAVTITLE
       assert_equal(expected, result['navigation'])
     end
 
-    def capture_stderr
-      orig_stderr = $stderr
-      $stderr = StringIO.new
-      yield
-    ensure
-      $stderr = orig_stderr
-    end
-
     def test_show_error_message_and_exit_if_pages_front_matter_is_malformed
       capture_stderr do
-        write_config "#{COLLECTIONS_CONFIG}\nnavigation:"
-        FILES_WITH_ERRORS.each { |file, content| write_page file, content }
+        write_config("#{COLLECTIONS_CONFIG}\nnavigation:")
+        FILES_WITH_ERRORS.each { |file, content| write_page(file, content) }
         exception = assert_raises(SystemExit) do
-          JekyllThemeGuidesMbland.update_navigation_configuration testdir
+          JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
         end
-        assert_equal 1, exception.status
+        assert_equal(1, exception.status)
         assert($stderr.string.include?(EXPECTED_ERRORS +
           "_config.yml not updated\n"))
       end

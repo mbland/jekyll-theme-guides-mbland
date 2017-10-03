@@ -3,14 +3,6 @@ require_relative '../lib/jekyll-theme-guides-mbland/breadcrumbs'
 require 'minitest/autorun'
 
 module JekyllThemeGuidesMbland
-  class DummySite
-    attr_accessor :config
-
-    def initialize
-      @config = {}
-    end
-  end
-
   class BreadcrumbsTest < ::Minitest::Test
     attr_accessor :site
 

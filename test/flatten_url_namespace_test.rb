@@ -73,12 +73,12 @@ module JekyllThemeGuidesMbland
       site.collections['pages'] = DummyCollection.new([home_page])
       generator.generate(site)
 
-      assert_equal('/', home_page.data['permalink'])
+      assert_equal('/', home_page.url)
       assert_equal([{ 'url' => '/', 'text' => 'Introduction' }],
         home_page.data['breadcrumbs'])
 
       site.config['flat_namespace'] = true
-      assert_equal('/', home_page.data['permalink'])
+      assert_equal('/', home_page.url)
       assert_equal([{ 'url' => '/', 'text' => 'Introduction' }],
         home_page.data['breadcrumbs'])
     end
@@ -87,8 +87,8 @@ module JekyllThemeGuidesMbland
       site.collections['pages'] = DummyCollection.new([home_page, foo_page])
       generator.generate(site)
 
-      assert_equal('/', home_page.data['permalink'])
-      assert_equal('/foo/', foo_page.data['permalink'])
+      assert_equal('/', home_page.url)
+      assert_equal('/foo/', foo_page.url)
 
       assert_equal([{ 'url' => '/', 'text' => 'Introduction' }],
         home_page.data['breadcrumbs'])
@@ -96,8 +96,8 @@ module JekyllThemeGuidesMbland
         foo_page.data['breadcrumbs'])
 
       site.config['flat_namespace'] = true
-      assert_equal('/', home_page.data['permalink'])
-      assert_equal('/foo/', foo_page.data['permalink'])
+      assert_equal('/', home_page.url)
+      assert_equal('/foo/', foo_page.url)
 
       assert_equal([{ 'url' => '/', 'text' => 'Introduction' }],
         home_page.data['breadcrumbs'])
@@ -109,13 +109,13 @@ module JekyllThemeGuidesMbland
       site.collections['pages'] = DummyCollection.new(all_docs)
       generator.generate(site)
 
-      assert_equal('/', home_page.data['permalink'])
-      assert_equal('/foo/', foo_page.data['permalink'])
-      assert_equal('/foo/bar/', bar_page.data['permalink'])
-      assert_equal('/foo/baz/', baz_page.data['permalink'])
-      assert_equal('/quux/', quux_page.data['permalink'])
-      assert_equal('/quux/xyzzy/', xyzzy_page.data['permalink'])
-      assert_equal('/quux/xyzzy/plugh/', plugh_page.data['permalink'])
+      assert_equal('/', home_page.url)
+      assert_equal('/foo/', foo_page.url)
+      assert_equal('/foo/bar/', bar_page.url)
+      assert_equal('/foo/baz/', baz_page.url)
+      assert_equal('/quux/', quux_page.url)
+      assert_equal('/quux/xyzzy/', xyzzy_page.url)
+      assert_equal('/quux/xyzzy/plugh/', plugh_page.url)
 
       assert_equal([{ 'url' => '/', 'text' => 'Introduction' }],
         home_page.data['breadcrumbs'])
@@ -143,13 +143,13 @@ module JekyllThemeGuidesMbland
       site.collections['pages'] = DummyCollection.new(all_docs)
       generator.generate(site)
 
-      assert_equal('/', home_page.data['permalink'])
-      assert_equal('/foo/', foo_page.data['permalink'])
-      assert_equal('/bar/', bar_page.data['permalink'])
-      assert_equal('/baz/', baz_page.data['permalink'])
-      assert_equal('/quux/', quux_page.data['permalink'])
-      assert_equal('/xyzzy/', xyzzy_page.data['permalink'])
-      assert_equal('/plugh/', plugh_page.data['permalink'])
+      assert_equal('/', home_page.url)
+      assert_equal('/foo/', foo_page.url)
+      assert_equal('/bar/', bar_page.url)
+      assert_equal('/baz/', baz_page.url)
+      assert_equal('/quux/', quux_page.url)
+      assert_equal('/xyzzy/', xyzzy_page.url)
+      assert_equal('/plugh/', plugh_page.url)
 
       assert_equal([{ 'url' => '/', 'text' => 'Introduction' }],
         home_page.data['breadcrumbs'])

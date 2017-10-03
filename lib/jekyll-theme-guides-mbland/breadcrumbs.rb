@@ -6,7 +6,7 @@ module JekyllThemeGuidesMbland
     def self.generate(site, docs)
       breadcrumbs = create_breadcrumbs(site)
       docs.each do |page|
-        page.data['breadcrumbs'] = breadcrumbs[page.permalink || page.url]
+        page.data['breadcrumbs'] = breadcrumbs[page.data[:working_url]]
       end
     end
 

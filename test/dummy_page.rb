@@ -5,6 +5,8 @@ module JekyllThemeGuidesMbland
     def initialize(site, permalink)
       @site = site
       @data = {}
+      @dir = nil
+      data['title'] = "I'm a dummy!"
       data['permalink'] = permalink
     end
 

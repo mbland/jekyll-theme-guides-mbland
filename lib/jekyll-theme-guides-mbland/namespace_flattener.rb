@@ -11,7 +11,8 @@ module JekyllThemeGuidesMbland
     end
 
     def self.flatten_page_urls(page, flat_to_orig)
-      orig_url = page.permalink || page.url
+      return if page.data['title'].nil?
+      orig_url = page.data[:working_url]
       flattened_url = flat_url(orig_url)
       (flat_to_orig[flattened_url] ||= []) << orig_url
       page.data['permalink'] = flattened_url
