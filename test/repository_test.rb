@@ -103,6 +103,9 @@ GO_SCRIPT
           'git config user.name "Test User"', logfile
         )
         JekyllThemeGuidesMbland.exec_cmd_capture_output(
+          'git config commit.gpgsign "false"', logfile
+        )
+        JekyllThemeGuidesMbland.exec_cmd_capture_output(
           'git commit -m "original repo"', logfile
         )
       end
