@@ -123,7 +123,7 @@ updates and clone its repository; then clone this repository into the same
 parent directory. For example, to use the Guides Template:
 
 ```shell
-$ git clone git@github.com:mbland/guides-template-mbland.git
+$ git clone git@github.com:mbland/guides-template.git
 $ git clone git@github.com:mbland/jekyll-theme-guides-mbland.git
 ```
 
