@@ -15,7 +15,7 @@
 
           <h1 class="site-title"><a class="title-link" href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
 
-          {% jekyll_pages_api_search_interface %}{% if site.back_link %}
+          {% unless site.jekyll_pages_api_search.skip_index %}{% jekyll_pages_api_search_interface %}{% endunless %}{% if site.back_link %}
 
           <div class="back-link"><a href="{{ site.back_link.url }}">&laquo; {{ site.back_link.text }}</a></div>{% endif %}
           {% include breadcrumbs.html %}
