@@ -20,12 +20,12 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'jekyll', '>=3.2.0'
   s.add_runtime_dependency 'jekyll_pages_api'
-  s.add_runtime_dependency 'jekyll_pages_api_search'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'minitest'
+  s.add_runtime_dependency 'jekyll_pages_api_search', '>=0.5.0'
+  s.add_development_dependency 'bundler'
   s.add_development_dependency 'codeclimate-test-reporter'
   s.add_development_dependency 'coveralls'
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'minitest'
   s.add_development_dependency 'nokogiri'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rubocop'
 end
