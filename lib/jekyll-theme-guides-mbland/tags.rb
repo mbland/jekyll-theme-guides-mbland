@@ -8,7 +8,7 @@ module JekyllThemeGuidesMbland
 
     attr_reader :parent_reference, :url_reference
 
-    def initialize(_tag_name, markup, _)
+    def initialize(_tag_name, markup, _tokens)
       references = markup.split(',').map(&:strip)
       @parent_reference = references.shift
       @url_reference = references.shift
@@ -37,7 +37,7 @@ module JekyllThemeGuidesMbland
 
     attr_reader :reference
 
-    def initialize(_tag_name, markup, _)
+    def initialize(_tag_name, markup, _tokens)
       @reference = markup.strip
     end
 

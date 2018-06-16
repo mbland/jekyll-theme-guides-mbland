@@ -229,7 +229,7 @@ module JekyllThemeGuidesMbland
     def self.write_navigation_data_to_config_file(config_path, nav_data)
       lines = []
       in_navigation = false
-      open(config_path).each_line do |line|
+      File.open(config_path).each_line do |line|
         in_navigation = process_line line, lines, nav_data, in_navigation
       end
       File.write config_path, lines.join

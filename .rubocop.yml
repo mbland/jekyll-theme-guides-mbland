@@ -4,6 +4,8 @@ AllCops:
     - 'Rakefile'
     - 'jekyll-theme-guides-mbland.gemspec'
     - 'lib/jekyll-theme-guides-mbland.rb'
+    - 'lib/jekyll-theme-guides-mbland/*.rb'
+    - 'test/*.rb'
 
 Lint/ParenthesesAsGroupedExpression:
   Description: Checks for method calls with a space before the opening parenthesis.
@@ -83,10 +85,16 @@ Style/StringLiterals:
   - single_quotes
   - double_quotes
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
   Description:
-    Not allowing a comma after the last item in a list or hash when each item
-    is on a single line is a bug, not a feature.
+    Not allowing a comma after the last item in a list when each item is on a
+    single line is a bug, not a feature.
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  Description:
+    Not allowing a comma after the last item in a hash when each item is on a
+    single line is a bug, not a feature.
   EnforcedStyleForMultiline: comma
 
 Layout/AlignParameters:
