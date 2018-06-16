@@ -129,6 +129,33 @@ module JekyllThemeGuidesMbland
       assert_result_matches_expected_config(expected_data)
     end
 
+    CONFIG_WITH_EXTERNAL_PAGE_THAT_HAS_CHILDREN = [
+      '- text: Parent',
+      '  url: parent/',
+      '  internal: true',
+      '  children:',
+      '  - text: External URL',
+      '    url: https://github.com/mbland/guides-style-mbland',
+      '    internal: false',
+      '    children:',
+      '    - text: Should not be allowed',
+      '      url: external-child/',
+      '      internal: true',
+    ].freeze
+
+    def test_external_pages_cannot_have_children
+      capture_stderr do
+        write_config(nav_config(CONFIG_WITH_EXTERNAL_PAGE_THAT_HAS_CHILDREN))
+        exception = assert_raises(SystemExit) do
+          JekyllThemeGuidesMbland.update_navigation_configuration(testdir)
+        end
+        assert_equal(1, exception.status)
+        assert_equal("Existing navigation entries contain errors:\n" \
+          "  External URL: external navigation URLs cannot have children\n" \
+          "_config.yml not updated\n", $stderr.string)
+      end
+    end
+
     CONFIG_WITH_MISSING_PAGES = [
       '- text: Introduction',
       '  internal: true',

@@ -129,12 +129,31 @@ module JekyllThemeGuidesMbland
     config_data = SafeYAML.load_file config_path, safe: true
     return unless config_data
     nav_data = config_data['navigation'] || []
+    NavigationMenu.validate_existing_data(nav_data)
     NavigationMenu.update_navigation_data(nav_data, basedir, config_data)
     NavigationMenuWriter.write_navigation_data_to_config_file(config_path,
       nav_data)
   end
 
   module NavigationMenu
+    def self.validate_existing_data(nav_data)
+      errors = []
+      validate_existing_data_impl(nav_data, errors)
+      err_msg = "Existing navigation entries contain errors:\n  " +
+        errors.join("\n  ") + "\n_config.yml not updated"
+      abort err_msg unless errors.empty?
+    end
+
+    def self.validate_existing_data_impl(nav_data, errors)
+      nav_data.each do |nav|
+        if !nav['internal'] && nav['children']
+          errors << "#{nav['text']}: external navigation URLs " \
+            'cannot have children'
+        end
+        validate_existing_data_impl(nav['children'] || [], errors)
+      end
+    end
+
     def self.update_navigation_data(nav_data, basedir, config_data)
       original = map_nav_items_by_url('/', nav_data).to_h
       updated = updated_nav_data(basedir)
