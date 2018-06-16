@@ -8,6 +8,7 @@ require 'nokogiri'
 require 'safe_yaml'
 
 module JekyllThemeGuidesMbland
+  # rubocop:disable ClassLength
   # rubocop:disable MethodLength
   class GeneratedSiteTest < ::Minitest::Test
     include TestSiteHelper
@@ -153,5 +154,6 @@ module JekyllThemeGuidesMbland
         nav_hrefs(page))
     end
     # rubocop:enable MethodLength
+    # rubocop:enable ClassLength
   end
 end
