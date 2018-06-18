@@ -8,6 +8,7 @@ require 'nokogiri'
 require 'safe_yaml'
 
 module JekyllThemeGuidesMbland
+  # rubocop:disable ClassLength
   # rubocop:disable MethodLength
   class GeneratedSiteTest < ::Minitest::Test
     include TestSiteHelper
@@ -20,8 +21,8 @@ module JekyllThemeGuidesMbland
       '    layout: "default"',
     ].join("\n")
 
-    def generate_site(extra_config: '')
-      write_config([DEFAULTS_CONFIG, NAV_YAML, extra_config, ''].join("\n"))
+    def generate_site(nav_data: NAV_YAML, extra_config: '')
+      write_config([DEFAULTS_CONFIG, nav_data, extra_config, ''].join("\n"))
       copy_pages(ALL_PAGES)
       config = SafeYAML.load(File.read(config_path))
       config['source'] = testdir
@@ -124,6 +125,35 @@ module JekyllThemeGuidesMbland
       assert_equal(['/add-a-new-page/'], breadcrumbs_hrefs(page))
       assert_equal(FLAT_SITE_URLS, nav_hrefs(page))
     end
+
+    NAV_CONFIG_WITH_EXTERNAL_SIBLING = [
+      'navigation:',
+      '- text: Parent',
+      '  url: parent/',
+      '  internal: true',
+      '  children:',
+      '  - text: External',
+      '    url: https://external.example.org/foo',
+      '    internal: false',
+      '  - text: Child',
+      '    url: child/',
+      '    internal: true',
+    ].freeze
+
+    EXPECTED_CONFIG_WITH_EXTERNAL_SIBLING_NAV_URLS = [
+      '/parent/',
+      '/parent/child/',
+      'https://external.example.org/foo',
+    ].freeze
+
+    # Regression test for #13.
+    def test_internal_child_does_not_inherit_siblings_external_url
+      generate_site(nav_data: NAV_CONFIG_WITH_EXTERNAL_SIBLING)
+      page = parse_page('')
+      assert_equal(EXPECTED_CONFIG_WITH_EXTERNAL_SIBLING_NAV_URLS,
+        nav_hrefs(page))
+    end
+    # rubocop:enable MethodLength
+    # rubocop:enable ClassLength
   end
-  # rubocop:enable MethodLength
 end
